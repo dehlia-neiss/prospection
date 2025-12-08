@@ -1,0 +1,26 @@
+nohup: ignoring input
+[dotenv@17.2.3] injecting env (7) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[SERVER] ══════════════════════════════════════
+[SERVER] 🚀 Serveur démarré sur http://localhost:5000
+[SERVER] ══════════════════════════════════════
+[SERVER] 🗺️  GOOGLE_MAPS_API_KEY: ✅ PRÊT
+[SERVER] 📧 HUNTER_API_KEY: ✅ PRÊT
+[SERVER] 💼 FULLENRICH_API_KEY: ✅ PRÊT
+[SERVER] 
+[SERVER] 🎯 STACK DE PROSPECTION 100% GRATUITE:
+[SERVER] 🎯 STACK DE PROSPECTION - DROPCONTACT:
+[SERVER]    1. 📊 API Recherche Entreprises
+[SERVER]    2. 🗺️  Google Maps Places (sites + téléphones)
+[SERVER]    3. 🇫🇷 Dropcontact (solution française)
+[SERVER]    4. 🌐 Web Scraping (emails site web)
+[SERVER]    5. 💼 FullEnrich (option premium)
+[SERVER] 
+[SERVER] ⏱️  Temps estimé: ~5-15s par recherche
+[SERVER] 💰 Coûts:
+[SERVER]    - Google Maps: ~$0.05/entreprise
+[SERVER]    - Web Scraping: 100% GRATUIT
+[SERVER]    - Pattern Detection: 100% GRATUIT
+[SERVER]    - FullEnrich: Optionnel (votre abonnement)
+[SERVER] 
+[SERVER] 🎉 Prêt à prospecter !
+[SERVER] ══════════════════════════════════════

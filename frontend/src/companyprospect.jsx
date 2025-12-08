@@ -104,13 +104,21 @@ export default function CompanyProspectList({ data = [] }) {
                 <span style={{ color: "#666", marginLeft: 8 }}>{c.resume}</span>
                 <div style={{ fontSize: 13, color: "#333" }}>{c.sector}</div>
                 <div style={{ fontSize: 13, color: "#333" }}>{c.address}</div>
-                {c.site && (
-                  <div style={{ fontSize: 13 }}>
+                {(c.site || c.telephone) && (
+                <div style={{ fontSize: 13 }}>
+                  {c.site && (
                     <a href={c.site.startsWith("http") ? c.site : `https://${c.site}`} target="_blank" rel="noreferrer">
                       {c.site}
                     </a>
-                  </div>
                 )}
+                {c.telephone && (
+                  <span style={{ marginLeft: 8 }}>
+                    📞 {c.telephone}
+                  </span>
+              )}
+            </div>
+          )}
+
               </div>
 
               <div>

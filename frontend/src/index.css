@@ -1,13 +1,177 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  /* Palette et espaces : variables Trellis (voir ci-dessus) */
+  --color-fill-surface-default: #fff;
+  --color-fill-surface-raised: #f5f8fa;
+  --color-fill-tertiary-default: #eaf0f6;
+  --color-fill-modal-gradient-1: #00a4bd;
+  --color-fill-modal-gradient-2: #00bda5;
+  --color-fill-alert: #f2547d;
+  /* ... toutes tes variables Trellis, copier-coller ici ... */
+
+  /* Typographie */
+  --font-body: 'Lexend Deca', Helvetica, Arial, sans-serif;
+  --font-code: 'Source Code Pro', Consolas, Monaco, 'Courier New', monospace;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-weight-normal: 400;
+  --font-weight-bold: 600;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  /* Borders & radius */
+  --border-radius: 8px;
+  --border-color-default: #516f90;
+  --border-color-dark: #425b76;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  background-color: var(--color-fill-surface-raised);
+  color: var(--trellis-color-text-core-default);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  margin: 0;
+  padding: 0;
+}
+
+/* Header et navigation */
+.header,
+.navbar {
+  background: linear-gradient(90deg, var(--color-fill-modal-gradient-1), var(--color-fill-modal-gradient-2));
+  color: var(--trellis-color-text-inverse-default);
+  padding: var(--space-md);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Map container */
+.map-container {
+  background: var(--color-fill-surface-default);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px var(--trellis-color-fill-transitional-shadow);
+  border: 1px solid var(--border-color-default);
+  width: 100%;
+  height: 600px;
+  margin: var(--space-lg) auto;
+}
+
+/* Marker InfoBulle */
+.marker-popup {
+  background: var(--color-fill-tertiary-default);
+  color: var(--trellis-color-text-core-default);
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.16);
+  padding: var(--space-md);
+  min-width: 250px;
+  font-size: var(--font-size-base);
+  font-family: var(--font-body);
+}
+
+/* Bouton principal (favoris, action) */
+.button-primary {
+  background: linear-gradient(90deg, var(--color-fill-modal-gradient-1), var(--color-fill-modal-gradient-2));
+  color: var(--trellis-color-text-inverse-default);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-sm) var(--space-lg);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.button-primary:hover {
+  background: var(--trellis-color-fill-transitional-beta-button-hover);
+}
+.button-primary:disabled {
+  background: var(--trellis-color-fill-tertiary-disabled);
+  color: var(--trellis-color-text-core-disabled);
+  cursor: not-allowed;
+}
+
+/* Input, select, filtres */
+.input,
+.select {
+  background: var(--color-fill-surface-default);
+  border: 1px solid var(--border-color-default);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  padding: var(--space-sm);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--space-xs);
+  outline: none;
+  transition: border 0.15s;
+}
+.input:focus,
+.select:focus {
+  border-color: var(--border-color-dark);
+}
+
+/* Carte marker cluster styles */
+.mapboxgl-marker-cluster {
+  background: var(--color-fill-tertiary-default);
+  color: var(--trellis-color-text-core-default);
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-xs) var(--space-sm);
+  border: 2px solid var(--border-color-dark);
+}
+
+/* Modal */
+.modal {
+  background: linear-gradient(90deg, var(--color-fill-modal-gradient-1), var(--color-fill-modal-gradient-2));
+  color: var(--trellis-color-text-inverse-default);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 24px rgba(0,0,0,.14);
+  padding: var(--space-lg);
+  max-width: 480px;
+  margin: auto;
+}
+
+/* Listes favorites, table */
+.favorites-list,
+.table {
+  background: var(--color-fill-tertiary-default);
+  color: var(--trellis-color-text-core-default);
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+}
+
+.table th,
+.table-header {
+  background: var(--trellis-color-specialty-table-header-default);
+  color: var(--trellis-color-text-core-subtle);
+  font-weight: var(--font-weight-bold);
+  border-bottom: 1px solid var(--border-color-default);
+}
+
+.table tr:nth-child(even) {
+  background: var(--trellis-color-specialty-table-zebra-stripe-default);
+}
+
+/* Responsivité (mobile) */
+@media (max-width: 600px) {
+  .map-container {
+    height: 320px;
+    margin: var(--space-sm);
+  }
+  .modal {
+    max-width: 95vw;
+    padding: var(--space-md);
+  }
+}
+
+/* Scroll personnalisé */
+::-webkit-scrollbar {
+  width: 10px;
+  background: var(--color-fill-modal-gradient-1);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--trellis-color-fill-transitional-scroll-default-gradient-color-1);
+  border-radius: var(--border-radius);
 }
