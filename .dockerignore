@@ -2,15 +2,15 @@
 *
 
 # SAUF ces dossiers/fichiers
-!tableau-entreprise/
+!tableau-entreprises/    ← AJOUTEZ LE "S" ICI !
 !Dockerfile
 !.dockerignore
 
-# Dans tableau-entreprise, ignorer node_modules et autres
-tableau-entreprise/node_modules/
-tableau-entreprise/frontend/node_modules/
-tableau-entreprise/backend/node_modules/
-tableau-entreprise/.git/
+# Dans tableau-entreprises, ignorer node_modules et autres
+tableau-entreprises/node_modules/
+tableau-entreprises/frontend/node_modules/
+tableau-entreprises/backend/node_modules/
+tableau-entreprises/.git/
 
 # Fichiers temporaires
 *.log
