@@ -1555,7 +1555,47 @@ app.get("/api", (req, res) => {
   return res.redirect("/");
 });
 
+// ===================================
+// SERVIR LE FRONTEND REACT (PRODUCTION)
+// ===================================
+import fs from "fs";
 
+const reactBuildPath = path.join(__dirname, '../frontend/build');
+
+// Vérifier si le build existe
+if (fs.existsSync(reactBuildPath)) {
+  console.log(`✅ Build React trouvé: ${reactBuildPath}`);
+  app.use(express.static(reactBuildPath));
+  
+  // Toutes les autres routes -> React
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(reactBuildPath, 'index.html'));
+  });
+  
+} else {
+  console.log(`⚠️  Build React non trouvé: ${reactBuildPath}`);
+  
+  // Fallback: page HTML simple
+  app.get('/', (req, res) => {
+    res.send(`
+      <html>
+        <body style="padding: 40px; font-family: Arial;">
+          <h1>🚀 Build React en cours...</h1>
+          <p>Le build React n'a pas été trouvé.</p>
+          <p>Vérifiez que <code>npm run build</code> a réussi.</p>
+        </body>
+      </html>
+    `);
+  });
+}
+
+// ===================================
+// DÉMARRAGE DU SERVEUR
+// ===================================
+app.listen(PORT, () => {
+  log("══════════════════════════════════════");
+  // ... (le reste de votre code d'écoute)
+});
 // ===================================
 // DÉMARRAGE DU SERVEUR
 // ===================================
