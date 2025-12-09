@@ -1,10 +1,17 @@
 FROM node:18-alpine
 WORKDIR /app
+
+# FRONTEND
 COPY tableau-entreprises/frontend/ ./frontend/
-RUN cd front && npm install && npm run build
+RUN cd frontend && npm install && npm run build
+
+# BACKEND
 COPY tableau-entreprises/backend/ ./backend/
-RUN cd back && npm install
+RUN cd backend && npm install
+
 ENV NODE_ENV=production
 ENV PORT=8080
 EXPOSE 8080
-CMD ["node", "back/server.js"]
+
+# MODIFIEZ CETTE LIGNE SI NÉCESSAIRE
+CMD ["node", "backend/server.js"]
