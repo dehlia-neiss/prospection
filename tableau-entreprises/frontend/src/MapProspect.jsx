@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import './MapProspects.css';
+import './MapProspect.css';
 
 // Fix des icônes Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
