@@ -31,7 +31,7 @@ const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 const HUNTER_API_KEY = process.env.HUNTER_API_KEY || "";
 const FULLENRICH_API_KEY = process.env.FULLENRICH_API_KEY || "";
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
-const PORT = Number(process.env.PORT || 5000);
+const PORT = Number(process.env.PORT || 8080);
 
 const app = express();
 
