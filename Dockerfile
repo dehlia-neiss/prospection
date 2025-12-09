@@ -1,15 +1,14 @@
-FROM alpine:latest
+FROM node:18-alpine
 WORKDIR /app
 
-# Copier tout
-COPY . .
+COPY tableau-entreprises/frontend/ ./frontend/
+RUN cd frontend && npm install && npm run build
 
-# Voir ce qu'on a
-RUN echo "=== STRUCTURE COMPLÈTE ==="
-RUN ls -la
-RUN echo "=== RECHERCHE tableau-entreprises ==="
-RUN find . -name "*tableau*" -type d
-RUN echo "=== CONTENU ==="
-RUN find . -type f -name "*.js" -o -name "*.json" | head -30
+COPY tableau-entreprises/backend/ ./backend/
+RUN cd backend && npm install
 
-CMD ["sleep", "3600"]
+ENV NODE_ENV=production
+ENV PORT=8080
+EXPOSE 8080
+
+CMD ["node", "backend/server.js"]

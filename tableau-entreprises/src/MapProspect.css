@@ -1,0 +1,796 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+
+:root {
+  --font-signal-mono: "DM Mono", monospace;
+  --font-neue-montreal: "Inter", sans-serif;
+  --color-green: #00FF89;
+  --color-black: #000000;
+  --color-gray: #EAEAF6;
+  --color-gray-light: #F9F9FC;
+  --color-white: #FFFFFF;
+  --color-disabled: #A6A6A6;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  height: 100vh;
+  font-family: var(--font-signal-mono);
+  background: var(--color-white);
+}
+
+/* SIDEBAR PRINCIPAL */
+#sidebar {
+  width: 400px;
+  min-width: 320px;
+  height: 100vh;
+  background: var(--color-white);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow-y: auto;
+  padding-top: 0;
+}
+
+/* TITRE de section */
+.section-title {
+  font-family: var(--font-neue-montreal);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 20px;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--color-black);
+  letter-spacing: 1px;
+  text-align: center;
+  background: var(--color-gray);
+  width: 100%;
+  padding: 24px 0;
+  border-bottom: 3px solid var(--color-gray);
+  box-sizing: border-box;  
+}
+
+/* CONTENU du formulaire */
+.panel-content {
+  padding: 1rem 20px 0 20px;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* BARRE DE RECHERCHE et inputs */
+#search-container {
+  margin-bottom: 1.2rem;
+  width: 100%;
+}
+
+#search-input {
+  font-family: var(--font-neue-montreal);
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--color-black);
+  background: var(--color-gray-light);
+  border: none;
+  border-bottom: 3px solid var(--color-gray);
+  width: 100%;
+  padding: 16px 10px;
+  border-radius: 6px 6px 0 0;
+  margin-bottom: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#search-input:focus {
+  outline: none;
+  border-bottom: 3px solid var(--color-green);
+  box-shadow: 0 2px 8px rgba(0,255,137,0.09);
+}
+
+/* BOUTON formulaire */
+.btn, .btn-primary {
+  font-family: var(--font-neue-montreal);
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 7px;
+  padding: 13px 0;
+  margin: 18px 0 4px 0;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  background: var(--color-green);
+  color: var(--color-black);
+}
+
+/* Checkbox FILTRES */
+.panel-content label {
+  font-family: var(--font-neue-montreal);
+  font-size: 15px;
+  color: var(--color-black);
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.panel-content input[type="checkbox"] {
+  accent-color: var(--color-green);
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid var(--color-gray);
+  background: var(--color-white);
+  cursor: pointer;
+  appearance: auto;
+}
+
+.panel-content label:hover input[type="checkbox"] {
+  box-shadow: 0 0 2px 1px var(--color-green);
+}
+
+/* LISTE ENTREPRISES (cartes) */
+.transaction-list {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  margin-top: 24px;
+}
+
+.transaction-card {
+  background: var(--color-gray-light);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+  border-radius: 12px;
+  border-bottom: 6px solid var(--color-gray);
+  box-shadow: 0 2px 8px rgba(0,255,137,0.05);
+  cursor: pointer;
+}
+
+.transaction-card.selected {
+  border-left: 4px solid #00FF89;
+  background-color: #f8fff8;
+  transform: translateX(4px);
+}
+
+.transaction-card:hover {
+  background-color: #f5f5f5;
+}
+
+.custom-leaflet-marker.highlghted {
+    animation: pulse 1s ease-in-out;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 255, 137, 0.7);
+    }
+    70% {
+        transform: scale(1.2);
+        box-shadow: 0 0 0 10px rgba(0, 255, 137, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(0, 255, 137, 0);
+    }
+}
+
+.transaction-card.favori {
+  border-color: var(--color-green);
+  background: var(--color-white);
+}
+
+.transaction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.card-title {
+  font-family: var(--font-signal-mono);
+  font-weight: 500;
+  color: var(--color-black);
+  font-size: 20px;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.card-details {
+  color: var(--color-black);
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 4px;
+  font-family: var(--font-neue-montreal);
+}
+
+/* MAP principale */
+#map {
+  flex: 1;
+  height: 100vh;
+  min-width: 0;
+  background: var(--color-gray);
+}
+
+/* Icône MARKER Leaflet */
+.custom-leaflet-marker {
+  width: 26px;
+  height: 26px;
+  background: var(--color-green);
+  border-radius: 50%;
+  border: 2px solid var(--color-white);
+  box-shadow: 0 3px 12px rgba(0,255,137,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+  position: absolute;
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+  pointer-events: auto;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  border: 2px solid var(--color-green);
+  font-family: 'Inter', sans-serif;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.leaflet-popup-tip {
+    border: 2px solid #000000;
+    background: var(--color-black);
+}
+
+.leaflet-marker-icon {
+    background: none !important;
+    border: none !important;
+}
+
+
+.prospect-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.filter-toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 16px;
+}
+
+.filter-toggle-label {
+  font-family: var(--font-neue-montreal);
+  font-size: 15px;
+  font-weight: 500;
+  margin-right: 10px;
+  color: var(--color-black);
+  user-select: none;
+}
+
+.filter-toggle-radio {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--color-gray);
+  border-radius: 50%;
+  background: var(--color-gray-light);
+  position: relative;
+  transition: border-color 0.14s;
+  cursor: pointer;
+  outline: none;
+}
+
+.filter-toggle-radio:checked {
+  border-color: var(--color-green);
+  background: var(--color-white);
+}
+
+.filter-toggle-radio:checked::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--color-green);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Slider de distance */
+#association-distance-filter {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: var(--color-gray-light);
+  border-radius: 10px;
+  border: 1px solid var(--color-gray);
+}
+
+.capacity-filter-title {
+  font-family: var(--font-neue-montreal);
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 1rem;
+  color: var(--color-black);
+}
+
+.capacity-filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.capacity-range {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.capacity-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  border-radius: 2.5px;
+  background: linear-gradient(to right,
+          #333834 var(--progress, 0%),
+          var(--color-gray) var(--progress, 0%));
+}
+
+.capacity-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: var(--color-white);
+  border: 1.176px solid #333834;
+  border-radius: 0;
+  cursor: pointer;
+  margin-top: -4.5px;
+}
+
+.capacity-range::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  border-radius: 2.5px;
+  background: var(--color-gray);
+}
+
+.capacity-range::-moz-range-progress {
+  height: 5px;
+  border-radius: 2.5px;
+  background: #333834;
+}
+
+.capacity-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--color-white);
+  border: 1.176px solid #333834;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-family: var(--font-neue-montreal);
+  font-size: 12px;
+  color: var(--color-disabled);
+}
+
+/* Message d'erreur */
+.error-message {
+  color: #CC4D36;
+  padding: 0.75rem;
+  margin: 1rem 0;
+  font-family: var(--font-neue-montreal);
+  background: rgba(204, 77, 54, 0.1);
+  border-radius: 6px;
+  border-left: 4px solid #CC4D36;
+}
+
+/* Aucun résultat */
+.no-results {
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-disabled);
+  font-family: var(--font-neue-montreal);
+  font-style: italic;
+}
+
+/* Bouton favoris */
+.favorite-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  padding: 0;
+  width: auto;
+  cursor: pointer;
+  color: var(--color-black);
+  transition: color 0.2s;
+}
+
+.favorite-btn:hover {
+  color: var(--color-green);
+}
+
+/* Section export */
+.export-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.export-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  margin: 0 0 12px 0;
+  color: #000000;
+  text-transform: uppercase;
+}
+
+.export-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.btn-export {
+  background: #000000;
+  color: #ffffff;
+  border: 2px solid #000000;
+  padding: 10px 15px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-export:hover:not(:disabled) {
+  background: #333333;
+  transform: translateY(-1px);
+}
+
+.btn-export:disabled {
+  background: #cccccc;
+  border-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-export-favorites {
+  background: #00FF89;
+  color: #000000;
+  border: 2px solid #000000;
+  padding: 10px 15px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.btn-export-favorites:hover:not(:disabled) {
+  background: #00e57a;
+  transform: translateY(-1px);
+}
+
+.btn-export-favorites:disabled {
+  background: #cccccc;
+  border-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+}
+/* Styles pour le VRAI menu déroulant des contacts */
+.contacts-dropdown {
+  margin: 15px 0;
+  padding: 0;
+}
+
+.contacts-dropdown label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #000000;
+  font-family: 'DM Mono', monospace;
+}
+
+.contact-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  background: white;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23000000' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+}
+
+.contact-select:focus {
+  outline: none;
+  border-color: #00FF89;
+  box-shadow: 0 0 0 2px rgba(0, 255, 137, 0.2);
+}
+
+.contact-details {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  display: none;
+}
+
+.selected-contact h4 {
+  margin: 0 0 12px 0;
+  color: #000000;
+  border-bottom: 2px solid #000000;
+  padding-bottom: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 16px;
+}
+
+.selected-contact p {
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.selected-contact strong {
+  color: #000000;
+  font-family: 'DM Mono', monospace;
+}
+
+.selected-contact a {
+  color: #000000;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.confidence-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  margin-left: 8px;
+  font-family: 'DM Mono', monospace;
+}
+
+.confidence-badge.high {
+  background: #00FF89;
+  color: #000000;
+}
+
+.confidence-badge.medium {
+  background: #FFD700;
+  color: #000000;
+}
+
+.confidence-badge.low {
+  background: #FF6B6B;
+  color: #000000;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-email, .btn-call {
+  padding: 8px 16px;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-email {
+  background: #000000;
+  color: #00FF89;
+}
+
+.btn-call {
+  background: #000000;
+  color: #ffffff;
+}
+
+.btn-email:hover {
+  background: #00FF89;
+  color: #000000;
+  transform: translateY(-2px);
+}
+
+.btn-call:hover {
+  background: #ffffff;
+  color: #000000;
+  transform: translateY(-2px);
+}
+
+/* Style pour les options du select */
+.contact-select option {
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.contact-select option:checked {
+  background: #000000;
+  color: #00FF89;
+}
+
+
+/* Popup compacte */
+.compact-popup {
+  max-width: 280px;
+  padding: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.popup-title {
+  margin: 0 0 8px 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #000000;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.popup-section {
+  margin: 6px 0;
+  padding: 4px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.popup-section strong {
+  min-width: 20px;
+  font-family: 'DM Mono', monospace;
+}
+
+.popup-link {
+  color: #000000;
+  text-decoration: underline;
+  word-break: break-all;
+  font-size: 12px;
+}
+
+.contacts-section {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.no-contacts {
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+  padding: 8px;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 280px !important;
+  line-height: 1.3;
+}
+/* Styles pour l'affichage des contacts dans la carte */
+.contact-summary {
+  margin-top: 8px;
+  padding: 6px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border-left: 3px solid #00FF89;
+}
+
+.contact-count {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.contact-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.contact-badge {
+  font-size: 0.75em;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-weight: 500;
+  border: 1px solid;
+}
+
+.contact-badge.email {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+.contact-badge.phone {
+  background: #e8f5e8;
+  color: #2e7d32;
+  border-color: #2e7d32;
+}
+
+.no-contacts {
+  font-size: 0.8em;
+  color: #666;
+  font-style: italic;
+}
+
+.company-direct-phone {
+  margin-top: 6px;
+  font-size: 0.85em;
+  font-weight: 500;
+  color: #2e7d32;
+}
+
+.company-direct-phone a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.company-direct-phone a:hover {
+  text-decoration: underline;
+}
+
+.export-csv-button {
+  margin-left: 8px;
+  padding: 6px 12px;
+  background-color: #00FF89;
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.export-csv-button:hover {
+  filter: brightness(0.9);
+}
