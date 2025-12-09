@@ -33,7 +33,11 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
+<<<<<<< HEAD
 set -gx VIRTUAL_ENV /home/dehlia/prospection/tableau-entreprises/venv
+=======
+set -gx VIRTUAL_ENV /home/dehlia/prospection/venv
+>>>>>>> 692701ec (add docker)
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

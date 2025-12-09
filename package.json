@@ -1,5 +1,11 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "leaflet": "^1.9.4"
+=======
+    "dotenv": "^17.2.3",
+    "groq-sdk": "^0.34.0",
+    "node-abort-controller": "^3.1.1"
+>>>>>>> 692701ec (add docker)
   }
 }

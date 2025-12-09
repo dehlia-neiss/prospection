@@ -1,0 +1,35 @@
+# Ignorer TOUT par défaut
+*
+
+# SAUF ces dossiers/fichiers
+!tableau-entreprise/
+!Dockerfile
+!.dockerignore
+
+# Dans tableau-entreprise, ignorer node_modules et autres
+tableau-entreprise/node_modules/
+tableau-entreprise/frontend/node_modules/
+tableau-entreprise/backend/node_modules/
+tableau-entreprise/.git/
+
+# Fichiers temporaires
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environnements
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Python (si présent)
+venv/
+__pycache__/
+*.pyc

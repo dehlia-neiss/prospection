@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/home/dehlia/prospection/tableau-entreprises/venv/bin/python3
+=======
+#!/home/dehlia/prospection/venv/bin/python3
+>>>>>>> 692701ec (add docker)
 # -*- coding: utf-8 -*-
 import re
 import sys
