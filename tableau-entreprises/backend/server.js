@@ -1516,6 +1516,46 @@ async function searchEntreprisesByCodesPostaux(codesPostaux, naf, limitTotal = 1
   return results;
 }
 
+
+// ===================================
+// ENDPOINTS DE BASE
+// ===================================
+
+// Route racine
+app.get("/", (req, res) => {
+  return res.json({
+    service: "Prospection API",
+    version: "1.0.0",
+    endpoints: {
+      health: "/health",
+      prospect: "/prospect (POST)",
+      enrichContact: "/enrich-contact (POST)"
+    },
+    status: "running"
+  });
+});
+
+// Route /api/health pour compatibilité
+app.get("/api/health", (req, res) => {
+  return res.json({
+    ok: true,
+    env: {
+      google_maps: !!GOOGLE_MAPS_API_KEY,
+      hunter: !!HUNTER_API_KEY,
+      fullenrich: !!FULLENRICH_API_KEY,
+      dropcontact: !!process.env.DROPCONTACT_API_KEY,
+      rocketreach: !!process.env.ROCKETREACH_API_KEY
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Route /api pour compatibilité
+app.get("/api", (req, res) => {
+  return res.redirect("/");
+});
+
+
 // ===================================
 // DÉMARRAGE DU SERVEUR
 // ===================================
