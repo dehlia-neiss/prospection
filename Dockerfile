@@ -1,8 +1,9 @@
 # Stage 1 : build React
-FROM node:18-alpine AS build
+FROM node:18-alpine AS build-frontend
+
 WORKDIR /app
 
-# Copier le package.json du frontend
+# Copier les fichiers de dépendances du frontend
 COPY tableau-entreprises/frontend/package*.json ./frontend/
 WORKDIR /app/frontend
 RUN npm install
@@ -11,13 +12,23 @@ RUN npm install
 COPY tableau-entreprises/frontend/ ./
 RUN npm run build
 
-# Stage 2 : image finale légère qui sert le build
+# Stage 2 : backend Node + build frontend
 FROM node:18-alpine
+
 WORKDIR /app
-RUN npm install -g serve
 
-# Copier le build généré
-COPY --from=build /app/frontend/build ./build
+# Dépendances backend
+COPY package*.json ./
+RUN npm install
 
-# Cloud Run écoute sur 8080
-CMD ["serve", "-s", "build", "-l", "8080"]
+# Copier le backend
+COPY . .
+
+# Copier le build React dans le backend (adapter le chemin si besoin)
+# Exemple : si ton serveur Express sert ./build en statique :
+COPY --from=build-frontend /app/frontend/build ./build
+
+ENV PORT=8080
+EXPOSE 8080
+
+CMD ["node", "server.js"]
