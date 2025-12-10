@@ -7,7 +7,31 @@ import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const reactBuildPath = path.join(__dirname, '../../frontend/build');
+
+const reactBuildPath = path.join(__dirname, "build");
+
+app.use(express.static(reactBuildPath));
+
+dotenv.config();
+if (!process.env.GOOGLE_MAPS_API_KEY) {
+  dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
+
+}
+
+
+const PORT = Number(process.env.PORT || 8080);
+const app = express();
+
+
+app.get("*", (req, res) => {
+  if (req.path.startsWith("/api")) {
+    return res.status(404).json({ error: "API route not found" });
+  }
+  res.sendFile(path.join(reactBuildPath, "index.html"));
+});
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 
 // Capture erreurs non gérées
 process.on('uncaughtException', (err) => {
@@ -21,17 +45,11 @@ let fullEnrichQuota = 3; // global (à mettre en haut du fichier par ex.)
 let lastFullEnrichReset = Date.now();
 
 
-dotenv.config();
-if (!process.env.GOOGLE_MAPS_API_KEY) {
-  dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
-
-}
 
 const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 const HUNTER_API_KEY = process.env.HUNTER_API_KEY || "";
 const FULLENRICH_API_KEY = process.env.FULLENRICH_API_KEY || "";
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
-const PORT = Number(process.env.PORT || 8080);
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:8080";
 
 const app = express();
 
