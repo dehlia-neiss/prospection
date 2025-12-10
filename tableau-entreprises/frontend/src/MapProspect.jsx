@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import './MapProspect.css';
 
 
-const API_URL = process.env.REACT_APP_API_URL || "https://prospection-753697494768.europe-west1.run.app/";
+const API_URL = process.env.REACT_APP_API_URL || "https://prospection-753697494768.europe-west1.run.app";
 
 // Fix des icônes Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
