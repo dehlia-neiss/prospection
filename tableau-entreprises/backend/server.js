@@ -7,7 +7,7 @@ import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const reactBuildPath = path.join(__dirname, '../frontend/build');
+const reactBuildPath = path.join(__dirname, '../../frontend/build');
 
 // Capture erreurs non gérées
 process.on('uncaughtException', (err) => {

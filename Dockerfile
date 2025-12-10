@@ -1,14 +1,18 @@
-FROM node:18-alpine
+# Étape 1: Build du frontend
+FROM node:18 AS frontend-builder
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm ci --only=production
+COPY frontend/ .
+RUN npm run build
+
+# Étape 2: Backend avec les fichiers buildés
+FROM node:18
 WORKDIR /app
-
-COPY tableau-entreprises/frontend/ ./frontend/
-RUN cd frontend && npm install && npm run build
-
-COPY tableau-entreprises/backend/ ./backend/
-RUN cd backend && npm install
-
-ENV NODE_ENV=production
-ENV PORT=8080
-EXPOSE 8080
-
-CMD ["node", "backend/server.js"]
+COPY backend/package*.json ./
+RUN npm ci --only=production
+COPY backend/ .
+# Copier les fichiers buildés du frontend
+COPY --from=frontend-builder /app/frontend/build ./public
+EXPOSE 3000
+CMD ["node", "server.js"]
