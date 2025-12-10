@@ -3,6 +3,9 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MapProspect.css';
 
+
+const API_URL = process.env.REACT_APP_API_URL || "https://prospection-753697494768.europe-west1.run.app/";
+
 // Fix des icônes Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -265,16 +268,17 @@ export default function MapProspects({ onSearch }) {
       // Si l'utilisateur a entré un code NAF dans le champ principal, on l'envoie
       const nafValue = isNafInput(companyName) ? companyName.trim().toUpperCase().replace(',', '.') : null;
 
-      const res = await fetch('http://localhost:8080/prospect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          companyName: isNafInput(companyName) ? '' : companyName,
-          nafCode: nafValue,
-          postalCode,
-          radiusKm: filters.radius || 100,
-        }),
-      });
+      const res = await fetch(`${API_URL}/prospect`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        companyName: isNafInput(companyName) ? null : companyName,
+        nafCode: nafValue,
+        postalCode,
+        radiusKm: filters.radius || 100,
+      }),
+    });
+
 
       const text = await res.text();
       let js = null;
