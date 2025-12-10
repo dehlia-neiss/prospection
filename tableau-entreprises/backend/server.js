@@ -1564,16 +1564,18 @@ app.get("/api", (req, res) => {
 // Vérifier si le build existe
 if (fs.existsSync(reactBuildPath)) {
   console.log(`✅ Build React trouvé: ${reactBuildPath}`);
+  const reactBuildPath = path.join(__dirname, "build");
+
   app.use(express.static(reactBuildPath));
-  
-  // TOUTES LES AUTRES ROUTES -> REACT (doit être la dernière route)
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(reactBuildPath, 'index.html'));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(reactBuildPath, "index.html"));
   });
-  
-} else {
-  console.log(`⚠️  Build React non trouvé: ${reactBuildPath}`);
-}
+
+  }
+    else {
+    console.log(`⚠️  Build React non trouvé: ${reactBuildPath}`);
+  }
 
 // ===================================
 // DÉMARRAGE DU SERVEUR
