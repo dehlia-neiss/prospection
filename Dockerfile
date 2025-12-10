@@ -1,7 +1,7 @@
 # Étape 1: Build du frontend
 FROM node:18 AS frontend-builder
 WORKDIR /app/frontend
-COPY frontend/package*.json ./
+COPY ["frontend/package.json", "frontend/package-lock.json", "./"]
 RUN npm ci --only=production
 COPY frontend/ .
 RUN npm run build
