@@ -101,7 +101,7 @@ export default function MapProspects({ onSearch }) {
 
           const domain = getDomainFromUrl(company.site);
 
-          const res = await fetch("http://localhost:5000/enrich-contact", {
+          const res = await fetch("http://localhost:8080/enrich-contact", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -265,7 +265,7 @@ export default function MapProspects({ onSearch }) {
       // Si l'utilisateur a entré un code NAF dans le champ principal, on l'envoie
       const nafValue = isNafInput(companyName) ? companyName.trim().toUpperCase().replace(',', '.') : null;
 
-      const res = await fetch('http://localhost:5000/prospect', {
+      const res = await fetch('http://localhost:8080/prospect', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
