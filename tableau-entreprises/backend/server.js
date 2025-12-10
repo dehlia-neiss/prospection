@@ -10,78 +10,55 @@ const __dirname = path.dirname(__filename);
 
 const reactBuildPath = path.join(__dirname, "build");
 
-app.use(express.static(reactBuildPath));
-
+// Chargement .env
 dotenv.config();
 if (!process.env.GOOGLE_MAPS_API_KEY) {
   dotenv.config({ path: path.resolve(__dirname, "..", ".env") });
-
 }
 
-
 const PORT = Number(process.env.PORT || 8080);
-const app = express();
-
-
-app.get("*", (req, res) => {
-  if (req.path.startsWith("/api")) {
-    return res.status(404).json({ error: "API route not found" });
-  }
-  res.sendFile(path.join(reactBuildPath, "index.html"));
-});
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
-
-// Capture erreurs non gérées
-process.on('uncaughtException', (err) => {
-  console.error('[UNCAUGHT_EXCEPTION]', err && err.stack ? err.stack : err);
-});
-process.on('unhandledRejection', (reason) => {
-  console.error('[UNHANDLED_REJECTION]', reason);
-});
-
-let fullEnrichQuota = 3; // global (à mettre en haut du fichier par ex.) 
-let lastFullEnrichReset = Date.now();
-
-
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:8080";
 
 const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY || "";
 const HUNTER_API_KEY = process.env.HUNTER_API_KEY || "";
 const FULLENRICH_API_KEY = process.env.FULLENRICH_API_KEY || "";
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:8080";
 
-const app = express();
+const app = express(); // ← une seule fois
 
-// Bloque les requêtes favicon
-app.get('/favicon.ico', (req, res) => {
-  res.status(204).end();
-});
-// Bloque les requêtes de ressources common
-app.get('/robots.txt', (req, res) => {
-  res.status(204).end();
-});
-
+// Middlewares
 app.use(cors({
   origin: FRONTEND_ORIGIN,
-  methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  optionsSuccessStatus: 200
+  methods: ["GET","HEAD","POST","PUT","PATCH","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+  optionsSuccessStatus: 200,
 }));
-
 app.use(express.json({ limit: "200kb" }));
 
+// Bloque favicon / robots
+app.get("/favicon.ico", (req, res) => res.status(204).end());
+app.get("/robots.txt", (req, res) => res.status(204).end());
+
+// Logs d’erreurs globales
+process.on("uncaughtException", (err) => {
+  console.error("[UNCAUGHT_EXCEPTION]", err && err.stack ? err.stack : err);
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("[UNHANDLED_REJECTION]", reason);
+});
+
+// Helpers log
 function log(...args) { console.log("[SERVER]", ...args); }
 function warn(...args) { console.warn("[WARN]", ...args); }
 function errlog(...args) { console.error("[ERROR]", ...args); }
 
+// /health
 app.get("/health", (req, res) => {
   return res.json({
     ok: true,
     env: {
       google_maps: !!GOOGLE_MAPS_API_KEY,
       hunter: !!HUNTER_API_KEY,
-      fullenrich: !!FULLENRICH_API_KEY
+      fullenrich: !!FULLENRICH_API_KEY,
     }
   });
 });
@@ -1587,18 +1564,16 @@ if (fs.existsSync(reactBuildPath)) {
   app.use(express.static(reactBuildPath));
 
   app.get("*", (req, res) => {
+    if (req.path.startsWith("/api")) {
+      return res.status(404).json({ error: "API route not found" });
+    }
     res.sendFile(path.join(reactBuildPath, "index.html"));
   });
-
-  }
-    else {
-    console.log(`⚠️  Build React non trouvé: ${reactBuildPath}`);
-  }
-
 // ===================================
 // DÉMARRAGE DU SERVEUR
 // ===================================
 app.listen(PORT, () => {
+  console.log(`Serveur listening on port ${PORT}`);
   log("══════════════════════════════════════");
   log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
   log("══════════════════════════════════════");
