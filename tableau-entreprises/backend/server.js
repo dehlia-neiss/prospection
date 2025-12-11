@@ -1561,7 +1561,7 @@ if (fs.existsSync(reactBuildPath)) {
   app.use(express.static(reactBuildPath));
 
   app.get("*", (req, res) => {
-    if (req.path.startsWith("/api")) {
+    if (req.path.startsWith("/api/")) {
       return res.status(404).json({ error: "API route not found" });
     }
     res.sendFile(path.join(reactBuildPath, "index.html"));
