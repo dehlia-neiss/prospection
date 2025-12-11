@@ -1095,10 +1095,10 @@ async function enrichFoundContactsWithFullEnrich(company, foundContacts = []) {
 
 async function completelyFreeEnrichment(company) {
   // Si pas de site web, pas d'enrichissement
-  if (!company.site_web) {
-    log(` ❌ Pas de site web, skip enrichment`);
-    return [];
-  }
+  //if (!company.site_web) {
+    //log(` ❌ Pas de site web, skip enrichment`);
+    //return [];
+  //}
 
   let allContacts = [];
   log(` 🎯 ENRICHISSEMENT COMPLET: ${company.nom}`);
@@ -1267,22 +1267,29 @@ app.post("/prospect", async (req, res) => {
 
     const enriched = [];
     for (const company of entreprisesARetenir) {
-      // 3a. Google Maps: site web + téléphone
+      // 1. Fallback manuel sur certaines enseignes (optionnel)
+      if (!company.site_web) {
+        const lower = company.nom.toLowerCase();
+        if (lower.includes("castorama")) company.site_web = "https://www.castorama.fr";
+        if (lower.includes("bricoman")) company.site_web = "https://www.bricoman.fr";
+      }
+
+      // 2. ENRICHISSEMENT 100% GRATUIT EN PREMIER
+      let contacts = await completelyFreeEnrichment(company);
+      company.contacts = contacts;
+
+      // 3. Google Maps ENSUITE pour compléter les trous
       const googleData = await enrichWithGoogleMaps(
         company.nom,
         company.naf,
         company.ville
       );
+
       if (googleData) {
-        company.site_web = googleData.site_web;
-        company.telephone = googleData.telephone;
-        company.adresse_complete = googleData.adresse_complete;
+        company.site_web = company.site_web || googleData.site_web;
+        company.telephone = company.telephone || googleData.telephone;
+        company.adresse_complete = company.adresse_complete || googleData.adresse_complete;
       }
-
-      // 3b. ENRICHISSEMENT 100% GRATUIT SANS COMPTE
-      let contacts = await completelyFreeEnrichment(company);
-
-      company.contacts = contacts;
 
       enriched.push({
         ...company,
@@ -1294,8 +1301,10 @@ app.post("/prospect", async (req, res) => {
           contacts.some(c => c.source?.includes("FullEnrich")) ? "FullEnrich" : null
         ].filter(Boolean)
       });
-      await new Promise(r => setTimeout(r, 500));
-    }
+
+  await new Promise(r => setTimeout(r, 500));
+}
+
 
     log("══════════════════════════════════════");
     log(`✅ ${enriched.length} entreprises enrichies`);
