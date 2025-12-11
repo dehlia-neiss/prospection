@@ -938,19 +938,6 @@ async function enrichWithDropcontact(company) {
 }
 
 // ===================================
-// HELPER: VÉRIFIER LE QUOTA FULLENRICH
-// ===================================
-function canUseFullEnrich() {
-  const now = Date.now();
-  // reset toutes les 60 secondes
-  if (now - lastFullEnrichReset > 60_000) {
-    fullEnrichQuota = 3;
-    lastFullEnrichReset = now;
-  }
-  return FULLENRICH_API_KEY && fullEnrichQuota > 0;
-}
-
-// ===================================
 // HELPER: DÉTERMINER SI UN CONTACT EST DE FRANCE (+33 ou email .fr)
 // ===================================
 function isContactFromFrance(contact) {
