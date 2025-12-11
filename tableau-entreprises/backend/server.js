@@ -25,6 +25,21 @@ const FULLENRICH_API_KEY = process.env.FULLENRICH_API_KEY || "";
 
 const app = express(); // ← une seule fois
 
+// Quota FullEnrich (ex: 3 appels/min)
+let fullEnrichQuota = 3;
+let lastFullEnrichReset = Date.now();
+
+function canUseFullEnrich() {
+  const now = Date.now();
+  // reset toutes les 60 secondes
+  if (now - lastFullEnrichReset > 60_000) {
+    fullEnrichQuota = 3;
+    lastFullEnrichReset = now;
+  }
+  return !!FULLENRICH_API_KEY && fullEnrichQuota > 0;
+}
+
+
 // Middlewares
 app.use(cors({
   origin: FRONTEND_ORIGIN,
