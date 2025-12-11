@@ -1276,10 +1276,7 @@ app.post("/prospect", async (req, res) => {
         if (lower.includes("bricoman")) company.site_web = "https://www.bricoman.fr";
       }
 
-      // 2. ENRICHISSEMENT 100% GRATUIT EN PREMIER
-      let contacts = await completelyFreeEnrichment(company);
-      company.contacts = contacts;
-
+      
       // 3. Google Maps ENSUITE pour compléter les trous
       const googleData = await enrichWithGoogleMaps(
         company.nom,
@@ -1292,6 +1289,11 @@ app.post("/prospect", async (req, res) => {
         company.telephone = company.telephone || googleData.telephone;
         company.adresse_complete = company.adresse_complete || googleData.adresse_complete;
       }
+
+      // 2. ENRICHISSEMENT 100% GRATUIT EN PREMIER
+      let contacts = await completelyFreeEnrichment(company);
+      company.contacts = contacts;
+
 
       enriched.push({
         ...company,
