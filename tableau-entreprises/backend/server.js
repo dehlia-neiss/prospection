@@ -1517,20 +1517,6 @@ async function searchEntreprisesByCodesPostaux(codesPostaux, naf, limitTotal = 1
 // ENDPOINTS DE BASE
 // ===================================
 
-// Route racine
-app.get("/", (req, res) => {
-  return res.json({
-    service: "Prospection API",
-    version: "1.0.0",
-    endpoints: {
-      health: "/health",
-      prospect: "/prospect (POST)",
-      enrichContact: "/enrich-contact (POST)"
-    },
-    status: "running"
-  });
-});
-
 // Route /api/health pour compatibilité
 app.get("/api/health", (req, res) => {
   return res.json({
@@ -1546,10 +1532,6 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Route /api pour compatibilité
-app.get("/api", (req, res) => {
-  return res.redirect("/");
-});
 
 // ===================================
 // SERVIR LE FRONTEND REACT (PRODUCTION)
