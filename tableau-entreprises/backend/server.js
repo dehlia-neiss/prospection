@@ -1554,12 +1554,9 @@ app.get("/api", (req, res) => {
 // ===================================
 // SERVIR LE FRONTEND REACT (PRODUCTION)
 // ===================================
-// CETTE SECTION DOIT ÊTRE LA TOUTE DERNIÈRE !
 
-// Vérifier si le build existe
 if (fs.existsSync(reactBuildPath)) {
   console.log(`✅ Build React trouvé: ${reactBuildPath}`);
-  const reactBuildPath = path.join(__dirname, "build");
 
   app.use(express.static(reactBuildPath));
 
@@ -1569,11 +1566,18 @@ if (fs.existsSync(reactBuildPath)) {
     }
     res.sendFile(path.join(reactBuildPath, "index.html"));
   });
+} else {
+  console.log(`⚠️ Build React non trouvé: ${reactBuildPath}`);
+}
+
 // ===================================
 // DÉMARRAGE DU SERVEUR
 // ===================================
+
 app.listen(PORT, () => {
-  console.log(`Serveur listening on port ${PORT}`);
+  console.log(`Serveur démarré sur http://localhost:${PORT}`);
+
+
   log("══════════════════════════════════════");
   log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
   log("══════════════════════════════════════");

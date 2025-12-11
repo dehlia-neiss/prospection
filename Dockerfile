@@ -3,7 +3,7 @@ FROM node:18-alpine AS build-frontend
 
 WORKDIR /app
 
-# Installer les deps du frontend
+# Frontend
 COPY tableau-entreprises/frontend/package*.json ./frontend/
 WORKDIR /app/frontend
 RUN npm install
@@ -11,19 +11,19 @@ RUN npm install
 COPY tableau-entreprises/frontend/ ./
 RUN npm run build
 
-# Stage 2 : backend Node + build React
+# Stage 2 : backend + React build
 FROM node:18-alpine
 
 WORKDIR /app
 
 # Dépendances backend
-COPY package*.json ./
+COPY tableau-entreprises/backend/package*.json ./
 RUN npm install
 
-# Code backend (inclut server.js, etc.)
-COPY . .
+# Copier le backend (dont server.js)
+COPY tableau-entreprises/backend/ ./
 
-# Copier le build React à l'endroit attendu par server.js (./build)
+# Copier le build React dans /app/build
 COPY --from=build-frontend /app/frontend/build ./build
 
 ENV PORT=8080
