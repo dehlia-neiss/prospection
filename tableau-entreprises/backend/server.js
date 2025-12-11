@@ -8,7 +8,7 @@ import fs from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const reactBuildPath = path.join(__dirname, "build");
+const reactBuildPath = path.join(__dirname, "..", "frontend", "build");
 
 // Chargement .env
 dotenv.config();
@@ -1561,7 +1561,7 @@ if (fs.existsSync(reactBuildPath)) {
   app.use(express.static(reactBuildPath));
 
   app.get("*", (req, res) => {
-    if (req.path.startsWith("/api/")) {
+    if (req.path.startsWith("/api")) {
       return res.status(404).json({ error: "API route not found" });
     }
     res.sendFile(path.join(reactBuildPath, "index.html"));
