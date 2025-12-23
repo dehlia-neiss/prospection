@@ -705,7 +705,7 @@ export default function MapProspects({ onSearch }) {
       <div id="sidebar">
         <div className="sidebar-center">
           {/* Titre de section */}
-          <h2 className="section-title">SalesPropstect</h2>
+          <h2 className="section-title">SalesProspects</h2>
 
           {/* Formulaire de recherche */}
           <form className="panel-content" onSubmit={handleSearch}>

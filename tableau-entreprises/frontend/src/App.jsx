@@ -1,13 +1,7 @@
 import React from "react";
-import MapProspect from "./MapProspect";  // Import de VOTRE composant
-import "./App.css";  // Styles pour App seulement
+import MapProspect from "./MapProspect";
+import './MapProspect.css';
 
-function App() {
-  return (
-    <div className="App">
-      <MapProspect />  {/* On affiche VOTRE composant */}
-    </div>
-  );
+export default function App() {
+  return <MapProspect />;
 }
-
-export default App;

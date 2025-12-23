@@ -1185,7 +1185,7 @@ async function completelyFreeEnrichment(company) {
 // ENDPOINT PRINCIPAL
 // ===================================
 app.post("/prospect", async (req, res) => {
-  const { companyName, postalCode, location, nafCode } = req.body || {};
+  const { companyName, postalCode, location, nafCode, radiusKm} = req.body || {};
   const codePostal = postalCode || location;
 
   log("══════════════════════════════════════");
@@ -1231,7 +1231,7 @@ app.post("/prospect", async (req, res) => {
     }
 
     // 3. Recherche automatique de codes postaux
-    const rayonKm = 100;
+    const rayonKm = Math.min(Number (radiusKm) || 100, 1000);
     log(`🔍 Recherche d'entreprises (NAF ${nafToUse}) dans un rayon de ${rayonKm}km autour de ${codePostal}...`);
     const codesPostauxRayon = await getCodesPostauxRayon(codePostal, rayonKm);
     log(`📍 Codes postaux trouvés: ${codesPostauxRayon.length}`);
@@ -1479,7 +1479,16 @@ app.post("/enrich-contact", async (req, res) => {
 // ===================================
 // FONCTIONS GÉOGRAPHIQUES (TOP-LEVEL)
 // ===================================
+
+function normalizePostalCode(cp = "") {
+  if (cp === "75000") return "75001";
+  if (/^\d{2}000$/.test(cp)) {
+    return cp.slice(0, 2) + "01";
+  }
+  return cp;
+}
 async function getCodesPostauxRayon(codePostal, rayonKm) {
+  const normalized = normalizePostalCode(codePostal);
   const geo = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${codePostal}&limit=1`).then(r => r.json());
   if (!geo.features?.length) throw new Error('Code postal inconnu');
   const [lon, lat] = geo.features[0].geometry.coordinates;
