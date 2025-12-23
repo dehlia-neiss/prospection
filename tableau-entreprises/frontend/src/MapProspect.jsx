@@ -737,7 +737,7 @@ export default function MapProspects({ onSearch }) {
                 <input
                   type="range"
                   min="1"
-                  max="500"
+                  max="1000"
                   value={filters.radius}
                   onChange={(e) =>
                     setFilters({
@@ -748,13 +748,13 @@ export default function MapProspects({ onSearch }) {
                   className="capacity-range"
                   id="distance-slider"
                   style={{
-                    "--progress": `${(filters.radius / 500) * 100}%`,
+                    "--progress": `${(filters.radius / 1000) * 100}%`,
                   }}
                 />
               </div>
               <div className="slider-labels">
                 <span>1 km</span>
-                <span>500 km</span>
+                <span>1000 km</span>
               </div>
             </div>
 

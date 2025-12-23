@@ -1489,7 +1489,8 @@ function normalizePostalCode(cp = "") {
 }
 async function getCodesPostauxRayon(codePostal, rayonKm) {
   const normalized = normalizePostalCode(codePostal);
-  const geo = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${codePostal}&limit=1`).then(r => r.json());
+
+  const geo = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${normalized}&limit=1`).then(r => r.json());
   if (!geo.features?.length) throw new Error('Code postal inconnu');
   const [lon, lat] = geo.features[0].geometry.coordinates;
   const rayonMetres = rayonKm * 1000;
